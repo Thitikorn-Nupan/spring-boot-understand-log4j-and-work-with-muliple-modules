@@ -6,6 +6,7 @@ import com.ttknpdev.springbootcrudmanytooneh2disktakelog4j.repositories.ContactR
 import com.ttknpdev.springbootcrudmanytooneh2disktakelog4j.repositories.CustomerRepository;
 import com.ttknpdev.springbootcrudmanytooneh2disktakelog4j.service.ContactService;
 // import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,12 @@ import java.util.List;
 import java.util.Map;
 
 // @Slf4j // ** it's not log4j so it won't do log4j.prop you provide
+@Log4j // log4j
 @Service
 public class DaoContact implements ContactService<Contact> {
     private ContactRepository contactRepository;
     private CustomerRepository customerRepository;
-    private final static Logger daoContactLogger = Logger.getLogger(DaoContact.class);
+    // private final static Logger daoContactLogger = Logger.getLogger(DaoContact.class); // i used @Log4j to config my log4j
     @Autowired
     public DaoContact(ContactRepository contactRepository , CustomerRepository customerRepository) {
         this.contactRepository = contactRepository;
@@ -57,7 +59,7 @@ public class DaoContact implements ContactService<Contact> {
                     contacts.add(contact);
                 });
         if (contacts.size() == 0) {
-            daoContactLogger.warn("there were no rows in your contacts table");
+            log.warn("there were no rows in your contacts table");
             throw new NotAllowedResponse("unacceptable to reads method of contact , no rows");
         }
         else {
@@ -70,7 +72,7 @@ public class DaoContact implements ContactService<Contact> {
         return contactRepository
                 .findById(phone)
                 .orElseThrow(()->{
-                    daoContactLogger.log(Level.WARN,"there were no phone : "+phone+" in your contacts table");
+                    log.warn("there were no phone : "+phone+" in your contacts table");
                     throw new NotAllowedResponse("unacceptable to read method of contact , no phone id");
                 });
     }
@@ -84,7 +86,7 @@ public class DaoContact implements ContactService<Contact> {
                     return contact;
                 })
                 .orElseThrow(()->{
-                    daoContactLogger.log(Level.WARN,"there were no phone : "+phone+" in your contacts table");
+                    log.warn("there were no phone : "+phone+" in your contacts table");
                     throw new NotAllowedResponse("unacceptable to read method of contact , no phone id");
                 });
     }
@@ -100,7 +102,7 @@ public class DaoContact implements ContactService<Contact> {
                     return response;
                 })
                 .orElseThrow(()->{
-                    daoContactLogger.log(Level.WARN,"there were no foreign key id : "+id+" in your contacts table");
+                    log.warn("there were no foreign key id : "+id+" in your contacts table");
                     throw new RuntimeException("unacceptable to read method of deleteAll , no foreign key");
                 });
     }
