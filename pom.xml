@@ -55,11 +55,11 @@
             <scope>test</scope>
         </dependency>
         <!-- include other my modules -->
-        <dependency>
+<!--        <dependency>
             <groupId>com.ttknpdev</groupId>
             <artifactId>my-commons-response</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
         <!-- include other my modules -->
     </dependencies>
 

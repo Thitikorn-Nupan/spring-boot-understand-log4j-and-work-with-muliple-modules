@@ -5,6 +5,7 @@ import com.ttknpdev.springbootcrudmanytooneh2disktakelog4j.exception.handler.Not
 import com.ttknpdev.springbootcrudmanytooneh2disktakelog4j.repositories.ContactRepository;
 import com.ttknpdev.springbootcrudmanytooneh2disktakelog4j.repositories.CustomerRepository;
 import com.ttknpdev.springbootcrudmanytooneh2disktakelog4j.service.ContactService;
+// import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// @Slf4j // ** it's not log4j so it won't do log4j.prop you provide
 @Service
 public class DaoContact implements ContactService<Contact> {
     private ContactRepository contactRepository;
