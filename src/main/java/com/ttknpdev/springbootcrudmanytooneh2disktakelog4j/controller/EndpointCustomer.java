@@ -14,21 +14,25 @@ import java.util.List;
 
 /* This Controller we use response pojo from other modules
 *  And Client can see just status Ok / 200
-*  Did Great*/
+*  Did Great
+*/
 @RestController
 @RequestMapping(value = "/api-customer")
 public class EndpointCustomer {
-    private CustomerService customerService;
+
+    private final CustomerService customerService;
+
     @Autowired
     public EndpointCustomer(CustomerService customerService) {
         this.customerService = customerService;
     }
+
     @GetMapping(value = "/reads")
     private ResponseEntity<?> reads() {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body(customerService.reads());
-        /*// @Builder in lombok work
+        /* @Builder in lombok work
         return ResponseEntity.ok(ResponseObject.<List<Customer>>builder()
                 .status(Constants.STATUS_ACCEPT)
                 .code(Constants.STATUS_ACCEPT_CODE)

@@ -11,10 +11,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class DaoCustomer implements CustomerService<Customer> {
-    private final static Logger daoCustomerLogger = Logger.getLogger(DaoCustomer.class);
-    private CustomerRepository customerRepository;
+
+    // you can reduce code by @Log4j annotation
+    private final  Logger daoCustomerLogger = Logger.getLogger(DaoCustomer.class);
+
+    private final CustomerRepository customerRepository;
+
     private Boolean validate(Customer customer) {
         Boolean bool = null;
         if (customer.getCustomerFullname().trim().isEmpty()
@@ -40,16 +45,16 @@ public class DaoCustomer implements CustomerService<Customer> {
         } // ended else
         return bool;
     }
+
     @Autowired
     public DaoCustomer(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
-
     @Override
     public Customer create(Customer obj) {
         if (!validate(obj)) {
-            throw new NotAllowedResponse("unacceptable properties of customer , some value were null");
+            throw new NotAllowedResponse("unacceptable the properties of customer , it's invalid");
         }
         return customerRepository.save(obj);
     }
@@ -65,7 +70,7 @@ public class DaoCustomer implements CustomerService<Customer> {
                 });
         if (customers.size() == 0) {
             daoCustomerLogger.warn("there were no rows in your customers table");
-            throw new NotAllowedResponse("unacceptable to reads method of customer , no rows in your table");
+            throw new NotAllowedResponse("unacceptable the reads method of customer , it's no rows in your table");
         }
         else {
             return customers;
@@ -77,8 +82,8 @@ public class DaoCustomer implements CustomerService<Customer> {
         return customerRepository
                 .findById(id)
                 .orElseThrow(()->{
-                    daoCustomerLogger.warn("there was no customer id "+id+"");
-                    throw new NotAllowedResponse("unacceptable to method read , no customer id");
+                    daoCustomerLogger.warn("there was no customer id "+id);
+                    throw new NotAllowedResponse("unacceptable the read method , it's no customer id");
                 });
     }
 
@@ -96,11 +101,11 @@ public class DaoCustomer implements CustomerService<Customer> {
                         return customerRepository.save(customer);
                     }
                     else {
-                        throw new NotAllowedResponse("unacceptable properties of customer , some value were null");
+                        throw new NotAllowedResponse("unacceptable the properties of customer , it's invalid");
                     }
                 })
                 .orElseThrow(()-> {
-                    daoCustomerLogger.warn("there was no customer id "+id+"");
+                    daoCustomerLogger.warn("there was no customer id "+id);
                     throw new NotAllowedResponse("unacceptable to method update , no customer id");
                 });
     }
@@ -112,7 +117,7 @@ public class DaoCustomer implements CustomerService<Customer> {
                     customerRepository.delete(customer);
                     return customer;
                 }).orElseThrow(()->{
-                    daoCustomerLogger.warn("there was no customer id "+id+"");
+                    daoCustomerLogger.warn("there was no customer id "+id);
                     throw new NotAllowedResponse("unacceptable to method delete , no customer id");
                 });
     }

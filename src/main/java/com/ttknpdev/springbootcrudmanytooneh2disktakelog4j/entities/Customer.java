@@ -16,6 +16,7 @@ import java.util.List;
 public class Customer {
 
     protected final static String TABLE = "customers";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
@@ -27,10 +28,11 @@ public class Customer {
     @Column(name = "customer_level")
     private Character customerLevel;
 
-    /* One to Manny */
+    // One to Manny
     @OneToMany(cascade = CascadeType.ALL, targetEntity = Contact.class)
-    @JoinColumn(name = "contact_customer_id" , referencedColumnName = "customer_id") // access foreign key
+    @JoinColumn(name = "contact_customer_id" , referencedColumnName = "customer_id")
     private List<Contact> contacts;
+
     public Customer(String customerFullname, Float customerSalary, Character customerLevel) {
         this.customerFullname = customerFullname;
         this.customerSalary = customerSalary;

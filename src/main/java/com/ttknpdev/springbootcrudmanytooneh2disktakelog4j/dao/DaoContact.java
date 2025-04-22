@@ -21,38 +21,41 @@ import java.util.Map;
 @Log4j // log4j
 @Service
 public class DaoContact implements ContactService<Contact> {
-    private ContactRepository contactRepository;
-    private CustomerRepository customerRepository;
+
+    private final ContactRepository contactRepository;
+    private final CustomerRepository customerRepository;
+
     // private final static Logger daoContactLogger = Logger.getLogger(DaoContact.class); // i used @Log4j to config my log4j
     @Autowired
     public DaoContact(ContactRepository contactRepository , CustomerRepository customerRepository) {
         this.contactRepository = contactRepository;
         this.customerRepository = customerRepository;
     }
-/*
-    @Override
-    public List<Contact> update(List<Contact> obj , Long id) {
-        for (int i = 0; i < obj.size(); i++) {
-            if (!validate(obj.get(i))){
-                throw new RuntimeException("unacceptable properties of contact");
+
+    /**
+        @Override
+        public List<Contact> update(List<Contact> obj , Long id) {
+            for (int i = 0; i < obj.size(); i++) {
+                if (!validate(obj.get(i))){
+                    throw new RuntimeException("unacceptable properties of contact");
+                }
             }
+            return customerRepository.findById(id)
+                    .map((customer) -> {
+                        List<Contact> contacts = new ArrayList<>();
+                        contacts.addAll(obj);
+                        customer.setContacts(contacts);
+                        customerRepository.save(customer); // it will store id (primary key) So it will update instead create
+                        return obj;
+                    }).orElseThrow(() -> {
+                        throw new RuntimeException("something was wrong in method crate() of contact");
+                    });
         }
-        return customerRepository.findById(id)
-                .map((customer) -> {
-                    List<Contact> contacts = new ArrayList<>();
-                    contacts.addAll(obj);
-                    customer.setContacts(contacts);
-                    customerRepository.save(customer); // it will store id (primary key) So it will update instead create
-                    return obj;
-                }).orElseThrow(() -> {
-                    throw new RuntimeException("something was wrong in method crate() of contact");
-                });
-    }
-*/
+    */
 
     @Override
     public List<Contact> reads() {
-        List<Contact> contacts = new ArrayList<>(); // default size is zero
+        List<Contact> contacts = new ArrayList<>(); // default size is 0
         contactRepository
                 .findAll()
                 .forEach(contact -> {
@@ -60,7 +63,7 @@ public class DaoContact implements ContactService<Contact> {
                 });
         if (contacts.size() == 0) {
             log.warn("there were no rows in your contacts table");
-            throw new NotAllowedResponse("unacceptable to reads method of contact , no rows");
+            throw new NotAllowedResponse("unacceptable the reads method of dao contact it's no rows");
         }
         else {
             return contacts;
@@ -72,8 +75,8 @@ public class DaoContact implements ContactService<Contact> {
         return contactRepository
                 .findById(phone)
                 .orElseThrow(()->{
-                    log.warn("there were no phone : "+phone+" in your contacts table");
-                    throw new NotAllowedResponse("unacceptable to read method of contact , no phone id");
+                    log.warn("there were no phone "+phone+" in your contacts table");
+                    throw new NotAllowedResponse("unacceptable the read method of dao contact it's no phone id");
                 });
     }
 
@@ -86,8 +89,8 @@ public class DaoContact implements ContactService<Contact> {
                     return contact;
                 })
                 .orElseThrow(()->{
-                    log.warn("there were no phone : "+phone+" in your contacts table");
-                    throw new NotAllowedResponse("unacceptable to read method of contact , no phone id");
+                    log.warn("there were no phone "+phone+" in your contacts table");
+                    throw new NotAllowedResponse("unacceptable the delete method of dao contact it's no phone id");
                 });
     }
 
@@ -102,12 +105,13 @@ public class DaoContact implements ContactService<Contact> {
                     return response;
                 })
                 .orElseThrow(()->{
-                    log.warn("there were no foreign key id : "+id+" in your contacts table");
-                    throw new RuntimeException("unacceptable to read method of deleteAll , no foreign key");
+                    log.warn("there were no foreign key id "+id+" in your contacts table");
+                    throw new RuntimeException("unacceptable the deleteAll method of dao contact it's no foreign key");
                 });
     }
 
-    /*    public static void main(String[] args) {
+    /**
+        public static void main(String[] args) {
         List<Contact> contacts = new ArrayList<>();
         daoContactLogger.log(Level.INFO,"start object list store empty value");
         daoContactLogger.info("contacts.size() is "+contacts.size()+" if they were empty lists object");

@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MyWarn {
+public class Warning {
     private Short status;
     private String code;
     private String course;

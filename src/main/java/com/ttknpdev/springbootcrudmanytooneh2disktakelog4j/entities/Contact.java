@@ -18,6 +18,7 @@ import lombok.Setter;
 public class Contact {
 
     protected final static String TABLE = "contacts";
+
     @Id
     private String phone;
     private String email;

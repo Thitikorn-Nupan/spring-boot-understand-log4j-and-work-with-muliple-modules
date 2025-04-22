@@ -8,5 +8,4 @@ public interface CustomerService<T> {
     List<T> reads();
     T update (T object , Long id);
     T delete (Long id);
-
 }

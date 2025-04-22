@@ -8,9 +8,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface ContactRepository extends CrudRepository<Contact,String> {
+    // when update/delete by native query don't forget use @Modifying , @Transactional
     @Modifying
     @Transactional
-    // when update/delete by native query don't forget use @Modifying , @Transactional
     @Query(value = "delete from contacts where contact_customer_id=:id",nativeQuery = true)
     int deleteByForeignKey(@Param("id") Long id);
 }

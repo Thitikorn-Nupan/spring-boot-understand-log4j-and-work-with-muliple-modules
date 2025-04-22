@@ -12,11 +12,14 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api-contact")
 public class EndpointContact {
-    private ContactService contactService;
+
+    private final ContactService contactService;
+
     @Autowired
     public EndpointContact(ContactService contactService) {
         this.contactService = contactService;
     }
+
     @GetMapping(value = "/reads")
     private ResponseEntity<List> reads() {
         return ResponseEntity
@@ -36,14 +39,15 @@ public class EndpointContact {
                 .status(HttpStatus.OK)
                 .body(contactService.delete(phone));
     }
-/*
-    @PutMapping(value = "/{id}/update")
-    private ResponseEntity<Object> update(@PathVariable Long id , @RequestBody List<Contact> contact) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(contactService.update(contact,id));
-    }
-*/
+
+    /**
+        @PutMapping(value = "/{id}/update")
+        private ResponseEntity<Object> update(@PathVariable Long id , @RequestBody List<Contact> contact) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(contactService.update(contact,id));
+        }
+    */
     @DeleteMapping(value = "/deleteAll/{id}")
     private ResponseEntity<Object> deleteAll(@PathVariable Long id) {
         return ResponseEntity
